@@ -1,8 +1,9 @@
 """
 Document Generator for Week 2 Task: EDA and Visualization Framework Design.
+Author: Arun Pandian (arunpandi47777@gmail.com)
 Generates:
-1. EDA_and_Visualization_Framework.docx (Native Word Document with full styling, strictly < 2048 KB)
-2. EDA_and_Visualization_Framework.doc (Rich HTML-formatted Document for Word/Web)
+1. EDA_and_Visualization_Framework.docx (Native Word Document with full styling, author metadata, strictly < 2048 KB)
+2. EDA_and_Visualization_Framework.doc (Formatted HTML-DOC for Word/Web)
 """
 
 import os
@@ -126,8 +127,14 @@ def format_table(table, header_bg="1B365D", alt_bg="F8F9FA"):
                     r.font.color.rgb = RGBColor(0x2C, 0x3E, 0x50)
 
 def generate_docx():
-    print("[*] Generating EDA_and_Visualization_Framework.docx...")
+    print("[*] Generating EDA_and_Visualization_Framework.docx with Author: Arun Pandian...")
     doc = Document()
+    
+    # Metadata properties
+    doc.core_properties.author = "Arun Pandian"
+    doc.core_properties.title = "Exploratory Data Analysis (EDA) and Visualization Framework Design"
+    doc.core_properties.subject = "Data Science Week 2 Deliverable"
+    doc.core_properties.comments = "Comprehensive EDA Framework by Arun Pandian (arunpandi47777@gmail.com)"
     
     for section in doc.sections:
         section.top_margin = Inches(1)
@@ -155,12 +162,13 @@ def generate_docx():
     run_title.font.size = Pt(22)
     run_title.font.color.rgb = RGBColor(0x1B, 0x36, 0x5D)
 
+    # Subtitle / Author Metadata
     meta_p = doc.add_paragraph()
     meta_p.paragraph_format.space_after = Pt(16)
-    meta_run = meta_p.add_run("A Universal, Multi-Phase Analytical Methodology for Tabular, Structured, and Complex Datasets\nAuthor: Data Science & AI Research Team | Status: Production Blueprint")
+    meta_run = meta_p.add_run("Author: Arun Pandian | Email: arunpandi47777@gmail.com\nTrack: Data Science & AI Research | Status: Production Blueprint")
     meta_run.font.italic = True
-    meta_run.font.size = Pt(10)
-    meta_run.font.color.rgb = RGBColor(0x7F, 0x8C, 0x8D)
+    meta_run.font.size = Pt(10.5)
+    meta_run.font.color.rgb = RGBColor(0x1B, 0x36, 0x5D)
 
     p_div = doc.add_paragraph()
     p_div.paragraph_format.space_after = Pt(14)
@@ -574,8 +582,8 @@ def generate_docx():
     return output_docx
 
 def generate_html_doc():
-    """Generates an HTML-based .doc file with rich styling and embedded images."""
-    print("[*] Generating EDA_and_Visualization_Framework.doc (HTML-DOC)...")
+    """Generates an HTML-based .doc file with rich styling, author info, and embedded images."""
+    print("[*] Generating EDA_and_Visualization_Framework.doc with Author: Arun Pandian...")
     
     def get_img_tag(path, caption):
         if not os.path.exists(path):
@@ -603,7 +611,8 @@ def generate_html_doc():
       xmlns="http://www.w3.org/TR/REC-html40">
 <head>
 <meta charset="utf-8">
-<title>Exploratory Data Analysis (EDA) and Visualization Framework Design</title>
+<meta name="author" content="Arun Pandian">
+<title>Exploratory Data Analysis (EDA) and Visualization Framework Design - Arun Pandian</title>
 <style>
     @page {{
         size: 8.5in 11in;
@@ -639,9 +648,9 @@ def generate_html_doc():
         line-height: 1.2;
     }}
     .doc-meta {{
-        font-size: 10pt;
-        color: #7F8C8D;
-        font-style: italic;
+        font-size: 10.5pt;
+        color: #1B365D;
+        font-weight: 600;
     }}
     h1 {{
         font-size: 15pt;
@@ -725,7 +734,7 @@ def generate_html_doc():
 <div class="header-banner">
     <div class="tagline">Data Science Technical Blueprint • Week 2 Deliverable</div>
     <h1 class="doc-title">Exploratory Data Analysis (EDA) & Visualization Framework Design</h1>
-    <div class="doc-meta">A Universal, Multi-Phase Analytical Methodology for Tabular, Structured, and Complex Datasets<br>Author: Data Science & AI Research Team</div>
+    <div class="doc-meta">Author: Arun Pandian | Email: arunpandi47777@gmail.com<br>Track: Data Science & AI Research | Status: Production Blueprint</div>
 </div>
 
 <h1>1. Executive Summary & Introduction to EDA</h1>
@@ -918,10 +927,13 @@ df['anomaly_flag'] = iso.fit_predict(df[numeric_cols])</pre>
 </html>
 """
     output_doc = os.path.join(SCRIPT_DIR, "EDA_and_Visualization_Framework.doc")
-    with open(output_doc, "w", encoding="utf-8") as f:
-        f.write(html_content)
-    size_kb = os.path.getsize(output_doc) / 1024
-    print(f"[+] Successfully generated '{output_doc}' ({size_kb:.2f} KB)")
+    try:
+        with open(output_doc, "w", encoding="utf-8") as f:
+            f.write(html_content)
+        size_kb = os.path.getsize(output_doc) / 1024
+        print(f"[+] Successfully generated '{output_doc}' ({size_kb:.2f} KB)")
+    except PermissionError:
+        print(f"[!] Note: {output_doc} is currently opened in Word. Skipping HTML write to avoid locking.")
     return output_doc
 
 if __name__ == "__main__":
