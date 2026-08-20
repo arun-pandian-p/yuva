@@ -3,6 +3,8 @@ __pycache__/
 *$py.class
 ~$*.docx
 ~$*.doc
+*.doc
+*_files/
 .vscode/
 .idea/
 .DS_Store
